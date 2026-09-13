@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Shared defaults keep the native and web surfaces warm and readable. */
+body {
+  background-color: #FAF4E8;
+}
