@@ -1,4 +1,19 @@
 import '../global.css';
+import { useFonts } from 'expo-font';
+import { Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
+import { NotoSans_400Regular, NotoSans_500Medium, NotoSans_600SemiBold, NotoSans_700Bold } from '@expo-google-fonts/noto-sans';
+import {
+  NotoSansDevanagari_400Regular,
+  NotoSansDevanagari_500Medium,
+  NotoSansDevanagari_600SemiBold,
+  NotoSansDevanagari_700Bold,
+} from '@expo-google-fonts/noto-sans-devanagari';
+import {
+  NotoSansOriya_400Regular,
+  NotoSansOriya_500Medium,
+  NotoSansOriya_600SemiBold,
+  NotoSansOriya_700Bold,
+} from '@expo-google-fonts/noto-sans-oriya';
 import { AppProvider, useApp } from '@/AppContext';
 import { LanguageSelectScreen } from '@/screens/LanguageSelectScreen';
 import { HomeDashboardScreen } from '@/screens/HomeDashboardScreen';
@@ -44,7 +59,7 @@ function ScreenRouter() {
       {screen !== 'language' && (
         <Pressable
           onPress={() => setOffline(!offline)}
-          className="absolute right-3 z-50 w-10 h-10 rounded-2xl bg-cream-50/95 border border-cream-200 items-center justify-center shadow-sm active:scale-90"
+          className="absolute right-3 z-50 w-10 h-10 rounded-md bg-cream-50/95 border border-cream-200 items-center justify-center active:bg-cream-100"
           style={{ top: insets.top + 8 }}
         >
           {offline ? <WifiOff size={17} color="#B95F1E" /> : <Wifi size={17} color="#4C9A61" />}
@@ -56,6 +71,27 @@ function ScreenRouter() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+    NotoSans_400Regular,
+    NotoSans_500Medium,
+    NotoSans_600SemiBold,
+    NotoSans_700Bold,
+    NotoSansDevanagari_400Regular,
+    NotoSansDevanagari_500Medium,
+    NotoSansDevanagari_600SemiBold,
+    NotoSansDevanagari_700Bold,
+    NotoSansOriya_400Regular,
+    NotoSansOriya_500Medium,
+    NotoSansOriya_600SemiBold,
+    NotoSansOriya_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <View className="flex-1 bg-forest-700" />;
+  }
+
   return (
     <SafeAreaProvider>
       <AppProvider>

@@ -18,7 +18,7 @@ export function CheckItem({ label, checked }: CheckItemProps) {
       >
         {checked && <Check size={20} color="#FDFAF3" strokeWidth={3} />}
       </View>
-      <Text className={twMerge('text-base font-medium', checked ? 'text-forest-700' : 'text-forest-400')}>
+      <Text className={twMerge('text-base font-body-medium', checked ? 'text-forest-700' : 'text-forest-400')}>
         {label}
       </Text>
     </View>

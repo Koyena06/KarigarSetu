@@ -83,10 +83,10 @@ export function CameraCaptureScreen() {
         <Image source={{ uri: previewUri }} className="absolute top-0 left-0 right-0 bottom-0" resizeMode="cover" />
       ) : (
         <View className="absolute top-0 left-0 right-0 bottom-0 items-center justify-center px-10">
-          <View className="w-24 h-24 rounded-[30px] bg-cream-50/10 border border-cream-50/15 items-center justify-center">
+          <View className="w-24 h-24 rounded-md bg-cream-50/10 border border-cream-50/15 items-center justify-center">
             <CameraIcon size={42} color="#FFFDF8" strokeWidth={1.8} />
           </View>
-          <Text className="text-cream-50 text-xl font-extrabold text-center mt-6">Frame your product clearly</Text>
+          <Text className="text-cream-50 text-xl font-heading-bold text-center mt-6">Frame your product clearly</Text>
           <Text className="text-cream-200 text-sm text-center leading-relaxed mt-2">Your device camera will open to capture a real product photo.</Text>
         </View>
       )}
@@ -106,26 +106,26 @@ export function CameraCaptureScreen() {
 
       <View className="absolute left-5 right-5 bottom-8">
         {busy ? (
-          <View className="bg-black/55 rounded-3xl"><LoadingState label="Opening camera…" /></View>
+          <View className="bg-black/55 rounded-md"><LoadingState label="Opening camera…" /></View>
         ) : previewUri ? (
           <View className="gap-3">
             <Button size="xl" onPress={() => navigate('enhance')}>Use Photo</Button>
             <Button size="lg" variant="outline" onPress={handleRetake} className="border-cream-50 bg-black/40">
-              <View className="flex-row items-center gap-2"><RefreshCw size={20} color="#FFFDF8" /><Text className="text-cream-50 text-lg font-bold">Retake</Text></View>
+              <View className="flex-row items-center gap-2"><RefreshCw size={20} color="#FFFDF8" /><Text className="text-cream-50 text-lg font-body-bold">Retake</Text></View>
             </Button>
           </View>
         ) : (
           <View className="flex-row items-end justify-between">
-            <Pressable onPress={() => void openPicker('gallery')} className="w-16 h-16 rounded-2xl bg-cream-50/15 border border-cream-50/20 items-center justify-center active:scale-95">
+            <Pressable onPress={() => void openPicker('gallery')} className="w-16 h-16 rounded-md bg-cream-50/15 border border-cream-50/20 items-center justify-center active:scale-95">
               <ImageIcon size={26} color="#FFFDF8" />
-              <Text className="text-cream-50 text-[10px] font-bold mt-1">Gallery</Text>
+              <Text className="text-cream-50 text-[10px] font-body-bold mt-1">Gallery</Text>
             </Pressable>
             <Pressable accessibilityLabel="Take product photo" onPress={() => void openPicker('camera')} className="w-24 h-24 rounded-full bg-cream-50 border-[7px] border-cream-50/35 items-center justify-center active:scale-95">
               <View className="w-16 h-16 rounded-full bg-terracotta-500 items-center justify-center"><CameraIcon size={30} color="#FFFDF8" /></View>
             </Pressable>
-            <Pressable onPress={() => setFrontCamera((current) => !current)} className="w-16 h-16 rounded-2xl bg-cream-50/15 border border-cream-50/20 items-center justify-center active:scale-95">
+            <Pressable onPress={() => setFrontCamera((current) => !current)} className="w-16 h-16 rounded-md bg-cream-50/15 border border-cream-50/20 items-center justify-center active:scale-95">
               <SwitchCamera size={26} color="#FFFDF8" />
-              <Text className="text-cream-50 text-[10px] font-bold mt-1">Switch</Text>
+              <Text className="text-cream-50 text-[10px] font-body-bold mt-1">Switch</Text>
             </Pressable>
           </View>
         )}

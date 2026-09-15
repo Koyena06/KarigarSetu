@@ -18,7 +18,7 @@ export function ProcessingOverlay({ message, subtext, children }: ProcessingOver
           <ActivityIndicator size="large" color="#236B45" />
         </View>
       </View>
-      <Text className="text-xl font-bold text-forest-700">{message}</Text>
+      <Text className="text-xl font-body-bold text-forest-700">{message}</Text>
       {subtext && <Text className="text-sm text-forest-400 mt-2">{subtext}</Text>}
       {children}
     </FadeSlideIn>

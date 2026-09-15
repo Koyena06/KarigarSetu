@@ -65,9 +65,9 @@ export function PhotoEnhancementScreen() {
       <ScreenWrapper>
         <ScreenHeader title="AI Image Enhancement" backTo="camera" />
         <LoadingState label={status === 'preparing' ? 'Preparing your product photo…' : 'Improving your product photo…'} />
-        {imageUri && <Image source={{ uri: imageUri }} className="w-36 h-36 rounded-3xl self-center border-4 border-cream-200" resizeMode="cover" />}
-        <View className="bg-mist-50 border border-mist-200 rounded-3xl p-4 mt-7">
-          <Text className="text-sm font-bold text-mist-500">{status === 'preparing' ? 'Preparing' : 'Processing'}</Text>
+        {imageUri && <Image source={{ uri: imageUri }} className="w-36 h-36 rounded-md self-center border-4 border-cream-200" resizeMode="cover" />}
+        <View className="bg-mist-50 border border-mist-200 rounded-md p-4 mt-7">
+          <Text className="text-sm font-body-bold text-mist-500">{status === 'preparing' ? 'Preparing' : 'Processing'}</Text>
           <Text className="text-sm leading-relaxed text-forest-500 mt-1">We are creating a cleaner product presentation while preserving your original image.</Text>
         </View>
       </ScreenWrapper>
@@ -77,35 +77,35 @@ export function PhotoEnhancementScreen() {
   return (
     <ScreenWrapper>
       <ScreenHeader title="AI Image Enhancement" backTo="camera" />
-      <View className="flex-row gap-3 bg-forest-50 border border-forest-100 rounded-3xl p-4 mb-5">
-        <View className="w-10 h-10 rounded-2xl bg-forest-500 items-center justify-center shrink-0"><CircleCheck size={22} color="#FFFDF8" /></View>
+      <View className="flex-row gap-3 bg-forest-50 border border-forest-100 rounded-md p-4 mb-5">
+        <View className="w-10 h-10 rounded-md bg-forest-500 items-center justify-center shrink-0"><CircleCheck size={22} color="#FFFDF8" /></View>
         <View className="flex-1">
-          <Text className="text-base font-extrabold text-forest-700">Your product photo is ready</Text>
+          <Text className="text-base font-heading-bold text-forest-700">Your product photo is ready</Text>
           <Text className="text-xs text-forest-500 leading-relaxed mt-0.5">The current demo keeps your original image URI while the enhancement service interface is ready for a live provider.</Text>
         </View>
       </View>
 
       <View className="flex-row items-center justify-center gap-2 mb-3">
-        <Sparkles size={16} color="#DB7B2E" />
-        <Text className="text-sm font-extrabold text-forest-700">BEFORE  →  AFTER</Text>
+        <Sparkles size={16} color="#A87D1E" strokeWidth={2.4} />
+        <Text className="text-sm font-heading-bold text-forest-700 tracking-wide">BEFORE → AFTER</Text>
       </View>
       <View className="flex-row gap-3 mb-6">
         <View className="flex-1">
-          <Text className="text-xs font-bold text-forest-400 mb-2 text-center">Original</Text>
-          <View className="rounded-3xl overflow-hidden border-2 border-cream-200 bg-cream-200">
+          <Text className="text-xs font-body-bold text-forest-400 mb-2 text-center">Original</Text>
+          <View className="rounded-md overflow-hidden border-2 border-cream-200 bg-cream-200">
             {imageUri && <Image source={{ uri: imageUri }} className="w-full h-44 opacity-75" resizeMode="cover" />}
           </View>
         </View>
         <View className="flex-1">
-          <Text className="text-xs font-bold text-forest-500 mb-2 text-center">Enhanced</Text>
-          <View className="rounded-3xl overflow-hidden border-2 border-forest-500 bg-forest-50 shadow-md shadow-forest-500/15">
+          <Text className="text-xs font-body-bold text-forest-500 mb-2 text-center">Enhanced</Text>
+          <View className="rounded-md overflow-hidden border-2 border-forest-500 bg-forest-50">
             {imageUri && <Image source={{ uri: imageUri }} className="w-full h-44" resizeMode="cover" />}
           </View>
         </View>
       </View>
 
-      <View className="bg-cream-50 rounded-3xl p-5 border border-cream-200 mb-6">
-        <Text className="text-base font-extrabold text-forest-700 mb-2">Enhancement summary</Text>
+      <View className="bg-cream-50 rounded-md p-5 border border-cream-200 border-l-[3px] border-l-gold-500 mb-6">
+        <Text className="text-base font-heading-bold text-forest-700 mb-2">Enhancement summary</Text>
         <CheckItem label={t.backgroundRemoved.replace('removed', 'improved')} checked={result?.checks.includes('background') ?? false} />
         <CheckItem label={t.lightingImproved} checked={result?.checks.includes('lighting') ?? false} />
         <CheckItem label={t.productCentered} checked={result?.checks.includes('centred') ?? false} />

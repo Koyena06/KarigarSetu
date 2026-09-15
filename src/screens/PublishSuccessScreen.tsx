@@ -74,12 +74,12 @@ export function PublishSuccessScreen() {
       <ScreenWrapper>
         <View className="flex-1 items-center justify-center py-12">
           <Animated.View
-            className="w-24 h-24 rounded-3xl bg-forest-50 items-center justify-center mb-8"
+            className="w-24 h-24 rounded-md bg-forest-50 items-center justify-center mb-8"
             style={{ transform: [{ translateY: bounce }] }}
           >
             <Upload size={48} color="#236B45" />
           </Animated.View>
-          <Text className="text-xl font-bold text-forest-700 mb-1">Publishing your product...</Text>
+          <Text className="text-xl font-heading-bold text-forest-700 mb-1">Publishing your product...</Text>
           <Text className="text-sm text-forest-400 mb-8">This will just take a moment</Text>
 
           <View className="w-full max-w-xs">
@@ -108,7 +108,7 @@ export function PublishSuccessScreen() {
                     <View className="w-2 h-2 rounded-full bg-forest-300" />
                   )}
                 </View>
-                <Text className={twMerge('text-base font-medium', i <= activeStep ? 'text-forest-700' : 'text-forest-400')}>
+                <Text className={twMerge('text-base font-body-medium', i <= activeStep ? 'text-forest-700' : 'text-forest-400')}>
                   {t[step.key as 'validating' | 'sending' | 'done']}
                 </Text>
               </View>
@@ -134,29 +134,29 @@ export function PublishSuccessScreen() {
 
         <View className="flex-row items-center gap-2 mb-2">
           <PartyPopper size={24} color="#DB7B2E" />
-          <Text className="text-2xl font-extrabold text-forest-700">You're Live!</Text>
+          <Text className="text-2xl font-heading-bold text-forest-700">You're Live!</Text>
         </View>
         <Text className="text-center text-sm text-forest-400 max-w-xs mb-2">
           Your product is now selling on {selectedChannels.join(', ')}
         </Text>
 
-        <View className="bg-cream-50 rounded-3xl p-5 border border-cream-200 mt-6 w-full max-w-sm">
+        <View className="bg-cream-50 rounded-md p-5 border border-cream-200 border-l-[3px] border-l-gold-500 mt-6 w-full max-w-sm">
           <View className="flex-row items-center gap-2 mb-3">
             <View className="w-2 h-2 rounded-full bg-forest-500" />
-            <Text className="text-sm font-bold text-forest-600">Published Summary</Text>
+            <Text className="text-sm font-body-bold text-forest-600">Published Summary</Text>
           </View>
           <View className="gap-2">
             <View className="flex-row justify-between">
               <Text className="text-sm text-forest-400">Product</Text>
-              <Text className="text-sm font-semibold text-forest-700">{draft.title || 'Terracotta Pot'}</Text>
+              <Text className="text-sm font-body-semibold text-forest-700">{draft.title || 'Terracotta Pot'}</Text>
             </View>
             <View className="flex-row justify-between">
               <Text className="text-sm text-forest-400">Price</Text>
-              <Text className="text-sm font-semibold text-forest-700">₹{draft.price || 600}</Text>
+              <Text className="text-sm font-body-semibold text-forest-700">₹{draft.price || 600}</Text>
             </View>
             <View className="flex-row justify-between">
               <Text className="text-sm text-forest-400">Channels</Text>
-              <Text className="text-sm font-semibold text-forest-700">{selectedChannels.length} active</Text>
+              <Text className="text-sm font-body-semibold text-forest-700">{selectedChannels.length} active</Text>
             </View>
           </View>
         </View>

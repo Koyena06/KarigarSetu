@@ -4,6 +4,7 @@ import type { TabName } from '@/types';
 import { twMerge } from 'tailwind-merge';
 import { View, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getBodyFont } from '@/theme/fonts';
 
 const TABS: { key: TabName; icon: typeof Home; labelKey: 'home' | 'products' | 'orders' | 'more' }[] = [
   { key: 'home', icon: Home, labelKey: 'home' },
@@ -13,8 +14,9 @@ const TABS: { key: TabName; icon: typeof Home; labelKey: 'home' | 'products' | '
 ];
 
 export function TabBar() {
-  const { activeTab, navigate, t } = useApp();
+  const { activeTab, navigate, t, language } = useApp();
   const insets = useSafeAreaInsets();
+  const scriptFont = getBodyFont(language, 'bold');
 
   return (
     <View
@@ -40,10 +42,15 @@ export function TabBar() {
                   tab.key
                 )
               }
-              className={twMerge('items-center gap-1 py-2.5 px-4 rounded-2xl min-w-16', active && 'bg-forest-100')}
+              className="items-center gap-1 py-2.5 px-4 min-w-16"
             >
-              <Icon size={24} color={active ? '#1B5938' : '#88C394'} strokeWidth={active ? 2.5 : 2} />
-              <Text className={twMerge('text-[11px] font-semibold', active ? 'text-forest-600' : 'text-forest-300')}>
+              <View className={twMerge('items-center justify-center', active && 'border-b-[3px] border-gold-500 pb-1')}>
+                <Icon size={24} color={active ? '#1B5938' : '#88C394'} strokeWidth={active ? 2.7 : 2.2} />
+              </View>
+              <Text
+                style={scriptFont ? { fontFamily: scriptFont } : undefined}
+                className={twMerge('text-[11px] font-body-bold', active ? 'text-forest-600' : 'text-forest-300')}
+              >
                 {t[tab.labelKey]}
               </Text>
             </Pressable>

@@ -11,5 +11,5 @@ const tones: Record<StatusTone, string> = {
 };
 
 export function StatusBadge({ label, tone = 'neutral', className }: { label: string; tone?: StatusTone; className?: string }) {
-  return <Text className={twMerge('text-[10px] font-extrabold px-2.5 py-1 rounded-lg overflow-hidden', tones[tone], className)}>{label}</Text>;
+  return <Text className={twMerge('text-[10px] font-heading-bold px-2.5 py-1 rounded-lg overflow-hidden', tones[tone], className)}>{label}</Text>;
 }

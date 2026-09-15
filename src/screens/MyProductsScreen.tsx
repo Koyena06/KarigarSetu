@@ -36,15 +36,15 @@ export function MyProductsScreen() {
 
         <View className="pt-6 pb-4 flex-row items-center justify-between">
           <View>
-            <Text className="text-2xl font-extrabold text-forest-700">{t.myProducts}</Text>
+            <Text className="text-2xl font-heading-bold text-forest-700">{t.myProducts}</Text>
             <Text className="text-sm text-forest-400 mt-1">{products.length} products in your catalog</Text>
           </View>
           <Pressable
             onPress={() => navigate('camera')}
-            className="flex-row items-center gap-1.5 bg-forest-500 rounded-full pl-3 pr-4 py-2.5 shadow-md shadow-forest-500/20 active:scale-95"
+            className="flex-row items-center gap-1.5 bg-forest-500 rounded-md pl-3 pr-4 py-2.5 active:scale-95"
           >
             <Plus size={16} color="#FDFAF3" strokeWidth={2.5} />
-            <Text className="text-cream-50 text-xs font-bold">Add New</Text>
+            <Text className="text-cream-50 text-xs font-body-bold">Add New</Text>
           </Pressable>
         </View>
 
@@ -54,11 +54,11 @@ export function MyProductsScreen() {
               key={tab.key}
               onPress={() => setFilter(tab.key)}
               className={twMerge(
-                'px-4 py-2.5 rounded-xl',
-              filter === tab.key ? 'bg-forest-500 shadow-md shadow-forest-500/20' : 'bg-cream-50 border border-cream-200'
+                'px-4 py-2.5 rounded-md',
+              filter === tab.key ? 'bg-forest-500' : 'bg-cream-50 border border-cream-200'
               )}
             >
-              <Text className={twMerge('font-bold text-sm', filter === tab.key ? 'text-cream-50' : 'text-forest-400')}>
+              <Text className={twMerge('font-body-bold text-sm', filter === tab.key ? 'text-cream-50' : 'text-forest-400')}>
                 {tab.label} ({tab.count})
               </Text>
             </Pressable>
@@ -90,11 +90,11 @@ function ProductCard({ product }: { product: Product }) {
         </View>
       </View>
       <View className="p-3">
-        <Text className="text-sm font-bold text-forest-700 leading-snug mb-2" numberOfLines={2}>
+        <Text className="text-sm font-body-bold text-forest-700 leading-snug mb-2" numberOfLines={2}>
           {product.title}
         </Text>
         <View className="flex-row items-center justify-between mb-2">
-          <Text className="text-lg font-extrabold text-forest-600">₹{product.price}</Text>
+          <Text className="text-lg font-heading-bold text-forest-600">₹{product.price}</Text>
           <Text className="text-xs text-forest-400">{product.stock} in stock</Text>
         </View>
         <View className="flex-row flex-wrap gap-1">

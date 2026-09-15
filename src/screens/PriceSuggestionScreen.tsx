@@ -40,36 +40,36 @@ export function PriceSuggestionScreen() {
 
       {!editing ? (
         <>
-          <View className="bg-cream-50 rounded-3xl p-8 border border-cream-200 items-center mb-5">
-            <View className="flex-row items-center gap-1.5 bg-forest-100 px-3 py-1.5 rounded-full mb-4">
+          <View className="bg-cream-50 rounded-md p-8 border border-cream-200 border-t-[3px] border-t-gold-500 items-center mb-5">
+            <View className="flex-row items-center gap-1.5 bg-forest-100 px-3 py-1.5 rounded-md mb-4">
               <TrendingUp size={14} color="#1B5938" />
-              <Text className="text-forest-600 text-xs font-bold">{t.recommended}</Text>
+              <Text className="text-forest-600 text-xs font-body-bold">{t.recommended}</Text>
             </View>
             <View className="flex-row items-center justify-center gap-1">
               <BadgeIndianRupee size={40} color="#236B45" strokeWidth={2.5} />
-              <Text className="text-6xl font-extrabold text-forest-600">{suggestedPrice}</Text>
+              <Text className="text-6xl font-heading-bold text-forest-600">{suggestedPrice}</Text>
             </View>
             <Text className="text-sm text-forest-400 mt-2">Selling price per unit</Text>
           </View>
 
-          <View className="bg-cream-50 rounded-3xl p-5 border border-cream-200 mb-6">
-            <Text className="text-sm font-bold text-forest-400 mb-4">Cost Breakdown</Text>
+          <View className="bg-cream-50 rounded-md p-5 border border-cream-200 mb-6">
+            <Text className="text-sm font-body-bold text-forest-400 mb-4">Cost Breakdown</Text>
             <View className="gap-3">
               {breakdownItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <View key={item.label} className="flex-row items-center gap-3">
-                    <View className="w-10 h-10 rounded-xl bg-cream-100 items-center justify-center">
+                    <View className="w-10 h-10 rounded-md bg-cream-100 items-center justify-center">
                       <Icon size={20} color="#236B45" />
                     </View>
-                    <Text className="flex-1 text-base font-medium text-forest-600">{item.label}</Text>
-                    <Text className="text-lg font-bold text-forest-700">₹{item.value}</Text>
+                    <Text className="flex-1 text-base font-body-medium text-forest-600">{item.label}</Text>
+                    <Text className="text-lg font-body-bold text-forest-700">₹{item.value}</Text>
                   </View>
                 );
               })}
               <View className="pt-3 border-t border-cream-200 flex-row items-center justify-between">
-                <Text className="text-base font-bold text-forest-600">Total</Text>
-                <Text className="text-xl font-extrabold text-forest-700">₹{suggestedPrice}</Text>
+                <Text className="text-base font-body-bold text-forest-600">Total</Text>
+                <Text className="text-xl font-heading-bold text-forest-700">₹{suggestedPrice}</Text>
               </View>
             </View>
           </View>
@@ -91,15 +91,15 @@ export function PriceSuggestionScreen() {
         </>
       ) : (
         <>
-          <View className="bg-cream-50 rounded-3xl p-6 border border-cream-200 items-center mb-5">
-            <Text className="text-sm font-medium text-forest-400 mb-4">Set your price</Text>
+          <View className="bg-cream-50 rounded-md p-6 border border-cream-200 items-center mb-5">
+            <Text className="text-sm font-body-medium text-forest-400 mb-4">Set your price</Text>
             <View className="flex-row items-center justify-center gap-1 mb-6">
               <BadgeIndianRupee size={32} color="#236B45" strokeWidth={2.5} />
               <TextInput
                 value={String(customPrice)}
                 onChangeText={(v) => setCustomPrice(Math.max(0, parseInt(v, 10) || 0))}
                 keyboardType="number-pad"
-                className="text-5xl font-extrabold text-forest-600 w-40 text-center border-b-2 border-forest-500"
+                className="text-5xl font-heading-bold text-forest-600 w-40 text-center border-b-2 border-forest-500"
               />
             </View>
 

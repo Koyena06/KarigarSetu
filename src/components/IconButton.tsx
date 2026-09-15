@@ -14,7 +14,10 @@ export function IconButton({ children, label, className, ...props }: IconButtonP
       accessibilityRole="button"
       accessibilityLabel={label}
       hitSlop={6}
-      className={twMerge('w-12 h-12 rounded-2xl bg-cream-50 border border-cream-200 items-center justify-center active:scale-95', className)}
+      className={twMerge(
+        'w-12 h-12 rounded-md bg-cream-50 border border-cream-200 items-center justify-center active:bg-cream-100',
+        className
+      )}
       {...props}
     >
       {children}

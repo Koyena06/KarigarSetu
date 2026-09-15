@@ -12,7 +12,7 @@ export function ChannelBadge({ channel, className }: { channel: Channel; classNa
   return (
     <Text
       className={twMerge(
-        'text-[10px] font-bold px-2.5 py-1 rounded-lg overflow-hidden',
+        'text-[10px] font-body-bold px-2.5 py-1 rounded-lg overflow-hidden',
         CHANNEL_STYLES[channel],
         className
       )}

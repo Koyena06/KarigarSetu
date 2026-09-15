@@ -5,7 +5,7 @@ export function SectionHeader({ title, subtitle, action }: { title: string; subt
   return (
     <View className="flex-row items-end justify-between gap-3 mb-3">
       <View className="flex-1">
-        <Text className="text-lg font-extrabold text-forest-700">{title}</Text>
+        <Text className="text-lg font-heading-bold text-forest-700">{title}</Text>
         {subtitle && <Text className="text-sm text-forest-400 mt-0.5">{subtitle}</Text>}
       </View>
       {action}

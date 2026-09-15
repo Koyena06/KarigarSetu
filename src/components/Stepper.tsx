@@ -24,10 +24,10 @@ export function Stepper({ steps, activeIndex }: { steps: Step[]; activeIndex: nu
                 {done ? (
                   <Check size={16} color="#FDFAF3" strokeWidth={3} />
                 ) : (
-                  <Text className={twMerge('text-xs font-bold', active ? 'text-cream-50' : 'text-forest-300')}>{i + 1}</Text>
+                  <Text className={twMerge('text-xs font-body-bold', active ? 'text-cream-50' : 'text-forest-300')}>{i + 1}</Text>
                 )}
               </View>
-              <Text className={twMerge('text-[11px] font-semibold mt-1', active || done ? 'text-forest-600' : 'text-forest-300')}>
+              <Text className={twMerge('text-[11px] font-body-semibold mt-1', active || done ? 'text-forest-600' : 'text-forest-300')}>
                 {step.label}
               </Text>
             </View>

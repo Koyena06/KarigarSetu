@@ -15,9 +15,9 @@ export function ScreenHeader({ title, backTo = 'home', rightAction }: ScreenHead
   return (
     <View className="flex-row items-center gap-3 pt-4 pb-3">
       <IconButton label="Go back" onPress={() => navigate(backTo)}>
-        <ArrowLeft size={21} color="#1B5938" />
+        <ArrowLeft size={24} color="#1B5938" strokeWidth={3} />
       </IconButton>
-      <Text className="text-xl font-extrabold text-forest-700 flex-1">{title}</Text>
+      <Text className="text-xl font-heading-bold text-forest-700 flex-1">{title}</Text>
       {rightAction}
     </View>
   );

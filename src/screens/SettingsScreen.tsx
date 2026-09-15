@@ -25,12 +25,12 @@ function Row({
       disabled={!onPress}
       className="flex-row items-center gap-3 py-3.5 active:opacity-60"
     >
-      <View className="w-9 h-9 rounded-xl bg-forest-50 items-center justify-center">
+      <View className="w-9 h-9 rounded-md bg-forest-50 items-center justify-center">
         <Icon size={18} color="#1B5938" />
       </View>
-      <Text className="flex-1 text-sm font-semibold text-forest-700">{label}</Text>
+      <Text className="flex-1 text-sm font-body-semibold text-forest-700">{label}</Text>
       {value && <Text className="text-xs text-forest-400 mr-1">{value}</Text>}
-      {onPress && <ChevronRight size={18} color="#88C394" />}
+      {onPress && <ChevronRight size={20} color="#1B5938" strokeWidth={3} />}
     </Pressable>
   );
 }
@@ -42,21 +42,21 @@ export function SettingsScreen() {
     <>
       <ScreenWrapper hasTabBar>
         <View className="pt-6 pb-4">
-          <Text className="text-2xl font-extrabold text-forest-700">Settings</Text>
+          <Text className="text-2xl font-heading-bold text-forest-700">Settings</Text>
           <Text className="text-sm text-forest-400 mt-1">Manage your profile and preferences</Text>
         </View>
 
         <Card className="p-5 flex-row items-center gap-4 mb-5">
           <View className="w-14 h-14 rounded-full bg-forest-500 items-center justify-center">
-            <Text className="text-xl font-bold text-cream-50">{ARTISAN_NAME[0]}</Text>
+            <Text className="text-xl font-body-bold text-cream-50">{ARTISAN_NAME[0]}</Text>
           </View>
           <View className="flex-1">
-            <Text className="text-lg font-bold text-forest-700">{ARTISAN_NAME}</Text>
+            <Text className="text-lg font-body-bold text-forest-700">{ARTISAN_NAME}</Text>
             <Text className="text-xs text-forest-400 mt-0.5">{products.length} products in catalog</Text>
           </View>
         </Card>
 
-        <Text className="text-xs font-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Language</Text>
+        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Language</Text>
         <Card className="px-4 mb-5">
           {LANGUAGES.map((lang, i) => {
             const isSelected = language === lang.key;
@@ -69,9 +69,11 @@ export function SettingsScreen() {
                   i < LANGUAGES.length - 1 && 'border-b border-cream-100'
                 )}
               >
-                <Text className="text-xl">{lang.flag}</Text>
+                <View className="w-9 h-9 rounded-md bg-cream-100 items-center justify-center">
+                  <Globe size={16} color="#4C9A61" strokeWidth={2.4} />
+                </View>
                 <View className="flex-1">
-                  <Text className="text-sm font-semibold text-forest-700">{lang.nativeLabel}</Text>
+                  <Text className="text-sm font-body-semibold text-forest-700">{lang.nativeLabel}</Text>
                   <Text className="text-xs text-forest-400">{lang.label}</Text>
                 </View>
                 {isSelected && (
@@ -84,14 +86,14 @@ export function SettingsScreen() {
           })}
         </Card>
 
-        <Text className="text-xs font-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Preferences</Text>
+        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Preferences</Text>
         <Card className="px-4 mb-5">
           <View className="flex-row items-center gap-3 py-3.5">
-            <View className="w-9 h-9 rounded-xl bg-forest-50 items-center justify-center">
+            <View className="w-9 h-9 rounded-md bg-forest-50 items-center justify-center">
               <WifiOff size={18} color="#1D4ED8" />
             </View>
             <View className="flex-1">
-              <Text className="text-sm font-semibold text-forest-700">Offline Mode</Text>
+              <Text className="text-sm font-body-semibold text-forest-700">Offline Mode</Text>
               <Text className="text-xs text-forest-400">Simulate no internet connection</Text>
             </View>
             <Switch
@@ -103,7 +105,7 @@ export function SettingsScreen() {
           </View>
         </Card>
 
-        <Text className="text-xs font-bold text-forest-400 uppercase tracking-wide mb-2 px-1">About</Text>
+        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">About</Text>
         <Card className="px-4 mb-5">
           <Row icon={HelpCircle} label="Help & Support" onPress={() => {}} />
           <View className="border-b border-cream-100" />

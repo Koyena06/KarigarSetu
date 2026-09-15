@@ -22,7 +22,7 @@ export function ChannelSelectScreen() {
       <ScreenHeader title="Publish / Sell" backTo="price" />
 
       <View className="mb-5">
-        <Text className="text-lg font-bold text-forest-700 mb-1">Select Channels</Text>
+        <Text className="text-lg font-heading-bold text-forest-700 mb-1">Select Channels</Text>
         <Text className="text-sm text-forest-400">Choose where to sell your product</Text>
       </View>
 
@@ -37,17 +37,17 @@ export function ChannelSelectScreen() {
               key={channel}
               onPress={() => toggleChannel(channel)}
               className={twMerge(
-                'flex-row items-center gap-4 p-5 rounded-3xl border-2 active:scale-[0.98]',
-                isSelected ? 'border-forest-500 bg-cream-50 shadow-md shadow-forest-500/10' : 'border-cream-200 bg-cream-50/70'
+                'flex-row items-center gap-4 p-5 rounded-md border-2 active:scale-[0.98]',
+                isSelected ? 'border-forest-500 bg-cream-50 border-l-[3px] border-l-gold-500' : 'border-cream-200 bg-cream-50/70'
               )}
             >
               <View
-                className={twMerge('w-14 h-14 rounded-2xl items-center justify-center shrink-0', isSelected ? 'bg-forest-500' : 'bg-cream-200')}
+                className={twMerge('w-14 h-14 rounded-md items-center justify-center shrink-0', isSelected ? 'bg-forest-500' : 'bg-cream-200')}
               >
                 <Icon size={28} color={isSelected ? '#FFFDF8' : '#4C9A61'} strokeWidth={2} />
               </View>
               <View className="flex-1 min-w-0">
-                <Text className="text-lg font-bold text-forest-700">{channel}</Text>
+                <Text className="text-lg font-body-bold text-forest-700">{channel}</Text>
                 <Text className="text-sm text-forest-400 leading-snug">{info.description}</Text>
               </View>
               <View
