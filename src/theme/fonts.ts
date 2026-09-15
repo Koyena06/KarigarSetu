@@ -1,20 +1,17 @@
 import type { Language } from '@/types';
 
 /**
- * KarigarSetu ships translated copy in scripts that don't share glyphs
- * (Latin, Devanagari, Odia/Oriya). A single font file can't render all of
- * them, so we pick the closest-matching Google Font family per script at
- * render time. Family names must match the ones passed to useFonts() in
- * App.tsx exactly.
+ * KarigarSetu ships copy in scripts that don't share glyphs (Latin,
+ * Devanagari, Odia). We pick a matching Noto family per script at render
+ * time. Family names must match the ones passed to useFonts() in App.tsx.
  *
- * Languages without a dedicated family loaded yet (Bengali, Tamil, Telugu,
- * Gujarati) fall back to the OS system font, which already ships the right
- * script coverage on both Android and iOS — better than showing tofu boxes.
+ * Bengali, Tamil, Telugu and Gujarati fall back to the OS font, which ships
+ * the right script coverage on Android and iOS.
  */
 
-type Weight = 'regular' | 'medium' | 'semibold' | 'bold';
+export type Weight = 'regular' | 'medium' | 'semibold' | 'bold';
 
-const BODY_FAMILIES: Record<string, Record<Weight, string>> = {
+const BODY_FAMILIES = {
   latin: {
     regular: 'NotoSans_400Regular',
     medium: 'NotoSans_500Medium',
@@ -33,14 +30,7 @@ const BODY_FAMILIES: Record<string, Record<Weight, string>> = {
     semibold: 'NotoSansOriya_600SemiBold',
     bold: 'NotoSansOriya_700Bold',
   },
-};
-
-const HEADING_FAMILIES: Record<'latin', Record<'semibold' | 'bold', string>> = {
-  latin: {
-    semibold: 'Poppins_600SemiBold',
-    bold: 'Poppins_700Bold',
-  },
-};
+} as const;
 
 const SCRIPT_BY_LANGUAGE: Partial<Record<Language, keyof typeof BODY_FAMILIES>> = {
   english: 'latin',
@@ -49,22 +39,16 @@ const SCRIPT_BY_LANGUAGE: Partial<Record<Language, keyof typeof BODY_FAMILIES>> 
   odia: 'oriya',
 };
 
-/** Body font family for the given language + weight. Falls back to system font for unmapped scripts. */
+export const DISPLAY_FONT = 'Fraunces_600SemiBold';
+
+/** Body font family for a language + weight; undefined lets the OS font render the script. */
 export function getBodyFont(language: Language, weight: Weight = 'regular'): string | undefined {
   const script = SCRIPT_BY_LANGUAGE[language];
-  if (!script) return undefined; // let RN use the OS default, which covers Bengali/Tamil/Telugu/Gujarati
-  return BODY_FAMILIES[script][weight];
+  return script ? BODY_FAMILIES[script][weight] : undefined;
 }
 
-/**
- * Heading font family. Only Latin/Devanagari read well in Poppins-style
- * geometric sans at display sizes; Odia headings use the Noto Sans Oriya
- * bold weight instead so glyphs stay legible.
- */
-export function getHeadingFont(language: Language, weight: 'semibold' | 'bold' = 'bold'): string | undefined {
-  const script = SCRIPT_BY_LANGUAGE[language];
-  if (script === 'oriya') return BODY_FAMILIES.oriya.bold;
-  if (script === 'devanagari') return BODY_FAMILIES.devanagari.bold;
-  if (script === 'latin') return HEADING_FAMILIES.latin[weight];
-  return undefined;
+/** Display (serif) font only reads correctly for Latin text; other scripts use their bold body face. */
+export function getDisplayFont(language: Language): string | undefined {
+  if (language === 'english') return DISPLAY_FONT;
+  return getBodyFont(language, 'bold');
 }

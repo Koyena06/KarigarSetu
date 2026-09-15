@@ -1,79 +1,103 @@
 import '../global.css';
+import { useEffect, useRef } from 'react';
+import { Animated, BackHandler, Easing, View } from 'react-native';
 import { useFonts } from 'expo-font';
-import { Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
-import { NotoSans_400Regular, NotoSans_500Medium, NotoSans_600SemiBold, NotoSans_700Bold } from '@expo-google-fonts/noto-sans';
-import {
-  NotoSansDevanagari_400Regular,
-  NotoSansDevanagari_500Medium,
-  NotoSansDevanagari_600SemiBold,
-  NotoSansDevanagari_700Bold,
-} from '@expo-google-fonts/noto-sans-devanagari';
-import {
-  NotoSansOriya_400Regular,
-  NotoSansOriya_500Medium,
-  NotoSansOriya_600SemiBold,
-  NotoSansOriya_700Bold,
-} from '@expo-google-fonts/noto-sans-oriya';
-import { AppProvider, useApp } from '@/AppContext';
-import { LanguageSelectScreen } from '@/screens/LanguageSelectScreen';
-import { HomeDashboardScreen } from '@/screens/HomeDashboardScreen';
-import { CameraCaptureScreen } from '@/screens/CameraCaptureScreen';
-import { PhotoEnhancementScreen } from '@/screens/PhotoEnhancementScreen';
-import { VoiceDescriptionScreen } from '@/screens/VoiceDescriptionScreen';
-import { ListingPreviewScreen } from '@/screens/ListingPreviewScreen';
-import { PriceSuggestionScreen } from '@/screens/PriceSuggestionScreen';
-import { ChannelSelectScreen } from '@/screens/ChannelSelectScreen';
-import { PublishSuccessScreen } from '@/screens/PublishSuccessScreen';
-import { MyProductsScreen } from '@/screens/MyProductsScreen';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+// Per-weight imports so only the faces we use are bundled.
+import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold';
+import { NotoSans_400Regular } from '@expo-google-fonts/noto-sans/400Regular';
+import { NotoSans_500Medium } from '@expo-google-fonts/noto-sans/500Medium';
+import { NotoSans_600SemiBold } from '@expo-google-fonts/noto-sans/600SemiBold';
+import { NotoSans_700Bold } from '@expo-google-fonts/noto-sans/700Bold';
+import { NotoSansDevanagari_400Regular } from '@expo-google-fonts/noto-sans-devanagari/400Regular';
+import { NotoSansDevanagari_500Medium } from '@expo-google-fonts/noto-sans-devanagari/500Medium';
+import { NotoSansDevanagari_600SemiBold } from '@expo-google-fonts/noto-sans-devanagari/600SemiBold';
+import { NotoSansDevanagari_700Bold } from '@expo-google-fonts/noto-sans-devanagari/700Bold';
+import { NotoSansOriya_400Regular } from '@expo-google-fonts/noto-sans-oriya/400Regular';
+import { NotoSansOriya_500Medium } from '@expo-google-fonts/noto-sans-oriya/500Medium';
+import { NotoSansOriya_600SemiBold } from '@expo-google-fonts/noto-sans-oriya/600SemiBold';
+import { NotoSansOriya_700Bold } from '@expo-google-fonts/noto-sans-oriya/700Bold';
+import { AppProvider, useApp } from '@/store/AppContext';
+import { STATUS_BAR_COLOR } from '@/theme/colors';
+import type { ScreenName } from '@/types';
+import { TabBar } from '@/components/TabBar';
+import { OnboardingScreen } from '@/screens/OnboardingScreen';
+import { TutorialScreen } from '@/screens/TutorialScreen';
+import { HomeScreen } from '@/screens/HomeScreen';
+import { CameraScreen } from '@/screens/CameraScreen';
+import { EnhanceScreen } from '@/screens/EnhanceScreen';
+import { VoiceScreen } from '@/screens/VoiceScreen';
+import { ListingScreen } from '@/screens/ListingScreen';
+import { PriceScreen } from '@/screens/PriceScreen';
+import { ChannelsScreen } from '@/screens/ChannelsScreen';
+import { SuccessScreen } from '@/screens/SuccessScreen';
+import { ProductsScreen } from '@/screens/ProductsScreen';
+import { ProductDetailScreen } from '@/screens/ProductDetailScreen';
 import { OrdersScreen } from '@/screens/OrdersScreen';
 import { SettingsScreen } from '@/screens/SettingsScreen';
-import { WifiOff, Wifi } from 'lucide-react-native';
-import type { ScreenName } from '@/types';
-import { View, Pressable } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 
-function ScreenRouter() {
-  const { screen, offline, setOffline } = useApp();
+void SplashScreen.preventAutoHideAsync();
+
+const SCREENS: Record<ScreenName, () => React.ReactElement | null> = {
+  onboarding: OnboardingScreen,
+  tutorial: TutorialScreen,
+  home: HomeScreen,
+  camera: CameraScreen,
+  enhance: EnhanceScreen,
+  voice: VoiceScreen,
+  listing: ListingScreen,
+  price: PriceScreen,
+  channels: ChannelsScreen,
+  success: SuccessScreen,
+  products: ProductsScreen,
+  productDetail: ProductDetailScreen,
+  orders: OrdersScreen,
+  settings: SettingsScreen,
+};
+
+const TAB_SCREENS: ScreenName[] = ['home', 'products', 'orders', 'settings'];
+
+function Router() {
+  const { screen, goBack, hydrated } = useApp();
   const insets = useSafeAreaInsets();
+  const fade = useRef(new Animated.Value(1)).current;
 
-  const screens: Record<ScreenName, React.ReactNode> = {
-    language: <LanguageSelectScreen />,
-    home: <HomeDashboardScreen />,
-    camera: <CameraCaptureScreen />,
-    enhance: <PhotoEnhancementScreen />,
-    voice: <VoiceDescriptionScreen />,
-    listing: <ListingPreviewScreen />,
-    price: <PriceSuggestionScreen />,
-    channels: <ChannelSelectScreen />,
-    success: <PublishSuccessScreen />,
-    products: <MyProductsScreen />,
-    orders: <OrdersScreen />,
-    settings: <SettingsScreen />,
-  };
+  useEffect(() => {
+    if (hydrated) void SplashScreen.hideAsync();
+  }, [hydrated]);
+
+  useEffect(() => {
+    const sub = BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => sub.remove();
+  }, [goBack]);
+
+  useEffect(() => {
+    fade.setValue(0);
+    Animated.timing(fade, { toValue: 1, duration: 220, easing: Easing.out(Easing.quad), useNativeDriver: true }).start();
+  }, [screen, fade]);
+
+  if (!hydrated) return <View className="flex-1 bg-leaf-500" />;
+
+  const Active = SCREENS[screen];
 
   return (
-    <View className="flex-1 bg-cream-100">
-      {screens[screen]}
-
-      {screen !== 'language' && (
-        <Pressable
-          onPress={() => setOffline(!offline)}
-          className="absolute right-3 z-50 w-10 h-10 rounded-md bg-cream-50/95 border border-cream-200 items-center justify-center active:bg-cream-100"
-          style={{ top: insets.top + 8 }}
-        >
-          {offline ? <WifiOff size={17} color="#B95F1E" /> : <Wifi size={17} color="#4C9A61" />}
-        </Pressable>
-      )}
-      <StatusBar style={screen === 'camera' ? 'light' : 'dark'} />
+    <View className="flex-1 bg-paper-100">
+      {/* Painted status-bar area: Android draws edge-to-edge, so the bar colour comes from this view on every screen. */}
+      <View style={{ height: insets.top, backgroundColor: STATUS_BAR_COLOR }} />
+      <Animated.View style={{ flex: 1, opacity: fade }}>
+        <Active key={screen} />
+      </Animated.View>
+      {TAB_SCREENS.includes(screen) && <TabBar />}
+      <StatusBar style="light" />
     </View>
   );
 }
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    Poppins_600SemiBold,
-    Poppins_700Bold,
+    Fraunces_600SemiBold,
     NotoSans_400Regular,
     NotoSans_500Medium,
     NotoSans_600SemiBold,
@@ -88,14 +112,12 @@ export default function App() {
     NotoSansOriya_700Bold,
   });
 
-  if (!fontsLoaded) {
-    return <View className="flex-1 bg-forest-700" />;
-  }
+  if (!fontsLoaded) return <View style={{ flex: 1, backgroundColor: STATUS_BAR_COLOR }} />;
 
   return (
     <SafeAreaProvider>
       <AppProvider>
-        <ScreenRouter />
+        <Router />
       </AppProvider>
     </SafeAreaProvider>
   );

@@ -1,129 +1,109 @@
-import { User, Globe, WifiOff, HelpCircle, ShieldCheck, FileText, ChevronRight, Check, Info } from 'lucide-react-native';
-import { useApp } from '@/AppContext';
-import { ScreenWrapper } from '@/components/ScreenWrapper';
-import { TabBar } from '@/components/TabBar';
-import { Card } from '@/components/Card';
-import { LANGUAGES, ARTISAN_NAME } from '@/mockData';
-import type { Language } from '@/types';
-import { twMerge } from 'tailwind-merge';
-import { View, Text, Pressable, Switch } from 'react-native';
+import type { ComponentType, ReactNode } from 'react';
+import { Alert, Pressable, Switch, View } from 'react-native';
+import Constants from 'expo-constants';
+import { ChevronRight, Database, GraduationCap, RotateCcw, Volume2 } from 'lucide-react-native';
+import { useApp } from '@/store/AppContext';
+import { services } from '@/config';
+import { GuideCard } from '@/components/GuideCard';
+import { Header } from '@/components/Header';
+import { LanguagePicker } from '@/components/LanguagePicker';
+import { Screen } from '@/components/Screen';
+import { Txt } from '@/components/Txt';
+import { Card, Divider, Field, SectionLabel } from '@/components/ui';
+import { colors } from '@/theme/colors';
 
-function Row({
-  icon: Icon,
-  label,
-  value,
-  onPress,
-}: {
-  icon: typeof User;
-  label: string;
-  value?: string;
-  onPress?: () => void;
-}) {
+type Icon = ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+
+function Row({ icon: Icon, title, hint, right, onPress, danger }: { icon: Icon; title: string; hint?: string; right?: ReactNode; onPress?: () => void; danger?: boolean }) {
   return (
-    <Pressable
-      onPress={onPress}
-      disabled={!onPress}
-      className="flex-row items-center gap-3 py-3.5 active:opacity-60"
-    >
-      <View className="w-9 h-9 rounded-md bg-forest-50 items-center justify-center">
-        <Icon size={18} color="#1B5938" />
+    <Pressable disabled={!onPress} onPress={onPress} className="flex-row items-center gap-3.5 px-4 min-h-[64px] py-3 active:bg-paper-50">
+      <Icon size={20} color={danger ? colors.clay500 : colors.ink700} strokeWidth={1.8} />
+      <View className="flex-1">
+        <Txt variant="body" weight="semibold" className={danger ? 'text-clay-600' : 'text-ink-900'}>
+          {title}
+        </Txt>
+        {hint ? <Txt variant="caption" className="mt-0.5">{hint}</Txt> : null}
       </View>
-      <Text className="flex-1 text-sm font-body-semibold text-forest-700">{label}</Text>
-      {value && <Text className="text-xs text-forest-400 mr-1">{value}</Text>}
-      {onPress && <ChevronRight size={20} color="#1B5938" strokeWidth={3} />}
+      {right ?? (onPress ? <ChevronRight size={18} color={colors.ink400} /> : null)}
     </Pressable>
   );
 }
 
+function ServiceRow({ label, on }: { label: string; on: boolean }) {
+  const { t } = useApp();
+  return (
+    <View className="flex-row items-center px-4 h-12">
+      <Txt variant="bodySm" weight="medium" className="flex-1 text-ink-800">
+        {label}
+      </Txt>
+      <View className={`w-2 h-2 rounded-full mr-2 ${on ? 'bg-leaf-500' : 'bg-saffron-500'}`} />
+      <Txt variant="caption">{on ? t.connected : t.notConnected}</Txt>
+    </View>
+  );
+}
+
 export function SettingsScreen() {
-  const { language, setLanguage, offline, setOffline, products } = useApp();
+  const { t, profile, updateProfile, voiceGuide, setVoiceGuide, navigate, loadSampleData, resetApp } = useApp();
+
+  const confirmReset = () => {
+    Alert.alert(t.resetApp, t.resetConfirm, [
+      { text: t.cancel, style: 'cancel' },
+      { text: t.resetApp, style: 'destructive', onPress: () => void resetApp() },
+    ]);
+  };
 
   return (
-    <>
-      <ScreenWrapper hasTabBar>
-        <View className="pt-6 pb-4">
-          <Text className="text-2xl font-heading-bold text-forest-700">Settings</Text>
-          <Text className="text-sm text-forest-400 mt-1">Manage your profile and preferences</Text>
-        </View>
+    <Screen withTabBar header={<Header large title={t.settings} />}>
+      <GuideCard guide="settings" />
 
-        <Card className="p-5 flex-row items-center gap-4 mb-5">
-          <View className="w-14 h-14 rounded-full bg-forest-500 items-center justify-center">
-            <Text className="text-xl font-body-bold text-cream-50">{ARTISAN_NAME[0]}</Text>
-          </View>
-          <View className="flex-1">
-            <Text className="text-lg font-body-bold text-forest-700">{ARTISAN_NAME}</Text>
-            <Text className="text-xs text-forest-400 mt-0.5">{products.length} products in catalog</Text>
-          </View>
-        </Card>
+      <SectionLabel className="mt-7">{t.profile}</SectionLabel>
+      <View className="gap-3">
+        <Field placeholder={t.yourNamePlaceholder} value={profile.name} onChangeText={(name) => updateProfile({ name })} autoCapitalize="words" />
+        <Field placeholder={t.yourCraftPlaceholder} value={profile.craft} onChangeText={(craft) => updateProfile({ craft })} />
+      </View>
 
-        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Language</Text>
-        <Card className="px-4 mb-5">
-          {LANGUAGES.map((lang, i) => {
-            const isSelected = language === lang.key;
-            return (
-              <Pressable
-                key={lang.key}
-                onPress={() => setLanguage(lang.key as Language)}
-                className={twMerge(
-                  'flex-row items-center gap-3 py-3.5 active:opacity-60',
-                  i < LANGUAGES.length - 1 && 'border-b border-cream-100'
-                )}
-              >
-                <View className="w-9 h-9 rounded-md bg-cream-100 items-center justify-center">
-                  <Globe size={16} color="#4C9A61" strokeWidth={2.4} />
-                </View>
-                <View className="flex-1">
-                  <Text className="text-sm font-body-semibold text-forest-700">{lang.nativeLabel}</Text>
-                  <Text className="text-xs text-forest-400">{lang.label}</Text>
-                </View>
-                {isSelected && (
-                  <View className="w-6 h-6 rounded-full bg-forest-500 items-center justify-center">
-                    <Check size={14} color="#FDFAF3" strokeWidth={3} />
-                  </View>
-                )}
-              </Pressable>
-            );
-          })}
-        </Card>
+      <SectionLabel className="mt-7">{t.language}</SectionLabel>
+      <LanguagePicker />
 
-        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">Preferences</Text>
-        <Card className="px-4 mb-5">
-          <View className="flex-row items-center gap-3 py-3.5">
-            <View className="w-9 h-9 rounded-md bg-forest-50 items-center justify-center">
-              <WifiOff size={18} color="#1D4ED8" />
-            </View>
-            <View className="flex-1">
-              <Text className="text-sm font-body-semibold text-forest-700">Offline Mode</Text>
-              <Text className="text-xs text-forest-400">Simulate no internet connection</Text>
-            </View>
+      <SectionLabel className="mt-7">{t.preferences}</SectionLabel>
+      <Card>
+        <Row
+          icon={Volume2}
+          title={t.voiceGuide}
+          hint={t.voiceGuideHint}
+          right={
             <Switch
-              value={offline}
-              onValueChange={setOffline}
-              trackColor={{ false: '#E9DEFF', true: '#88C394' }}
-              thumbColor={offline ? '#1B5938' : '#FFFDF8'}
+              value={voiceGuide}
+              onValueChange={setVoiceGuide}
+              trackColor={{ false: colors.paper300, true: colors.leaf500 }}
+              thumbColor={colors.white}
+              ios_backgroundColor={colors.paper300}
             />
-          </View>
-        </Card>
+          }
+        />
+        <Divider inset={50} />
+        <Row icon={GraduationCap} title={t.tutorial} hint={t.tutorialHint} onPress={() => navigate('tutorial')} />
+      </Card>
 
-        <Text className="text-xs font-body-bold text-forest-400 uppercase tracking-wide mb-2 px-1">About</Text>
-        <Card className="px-4 mb-5">
-          <Row icon={HelpCircle} label="Help & Support" onPress={() => {}} />
-          <View className="border-b border-cream-100" />
-          <Row icon={ShieldCheck} label="Privacy Policy" onPress={() => {}} />
-          <View className="border-b border-cream-100" />
-          <Row icon={FileText} label="Terms of Service" onPress={() => {}} />
-          <View className="border-b border-cream-100" />
-          <Row icon={Info} label="App Version" value="1.0.0" />
-        </Card>
+      <SectionLabel className="mt-7">{t.services}</SectionLabel>
+      <Card>
+        <ServiceRow label={t.aiListing} on={services.ai} />
+        <Divider inset={16} />
+        <ServiceRow label={t.speechToText} on={services.speechToText} />
+        <Divider inset={16} />
+        <ServiceRow label={t.photoCleanup} on={services.studio} />
+      </Card>
 
-        <View className="items-center py-4">
-          <View className="flex-row items-center gap-1.5 opacity-60">
-            <Globe size={12} color="#93C5FD" />
-            <Text className="text-[11px] text-forest-300">KarigarSetu · AI for Artisans</Text>
-          </View>
-        </View>
-      </ScreenWrapper>
-      <TabBar />
-    </>
+      <SectionLabel className="mt-7">{t.data}</SectionLabel>
+      <Card>
+        <Row icon={Database} title={t.loadSample} hint={t.loadSampleHint} onPress={loadSampleData} />
+        <Divider inset={50} />
+        <Row icon={RotateCcw} title={t.resetApp} hint={t.resetAppHint} onPress={confirmReset} danger />
+      </Card>
+
+      <Txt variant="caption" latin className="text-center mt-8">
+        KarigarSetu · {t.version} {Constants.expoConfig?.version ?? '1.0.0'}
+      </Txt>
+    </Screen>
   );
 }

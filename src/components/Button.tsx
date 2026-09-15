@@ -1,96 +1,78 @@
-import type { ReactNode } from 'react';
-import { Pressable, Text, type PressableProps } from 'react-native';
+import type { ComponentType } from 'react';
+import { ActivityIndicator, Pressable, View, type PressableProps } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { twMerge } from 'tailwind-merge';
-import { useApp } from '@/AppContext';
-import { getBodyFont } from '@/theme/fonts';
+import { colors } from '@/theme/colors';
+import { Txt } from './Txt';
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-type Size = 'md' | 'lg' | 'xl';
+type Variant = 'primary' | 'gold' | 'secondary' | 'ghost' | 'danger';
+type Size = 'lg' | 'md' | 'sm';
+
+type Icon = ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
 
 interface ButtonProps extends Omit<PressableProps, 'children'> {
+  label: string;
   variant?: Variant;
   size?: Size;
-  fullWidth?: boolean;
+  icon?: Icon;
+  loading?: boolean;
   className?: string;
-  children: ReactNode;
 }
 
-const variantClasses: Record<Variant, string> = {
-  primary: 'bg-forest-500 active:bg-forest-700',
-  secondary: 'bg-terracotta-500 active:bg-terracotta-600',
-  outline: 'border-2 border-forest-500 bg-cream-50 active:bg-forest-100',
-  ghost: 'bg-transparent active:bg-forest-100',
-  danger: 'bg-red-600 active:bg-red-700',
+const CONTAINER: Record<Variant, string> = {
+  primary: 'bg-leaf-500 active:bg-leaf-700',
+  gold: 'bg-gold-400 active:bg-gold-500',
+  secondary: 'bg-white border border-paper-300 active:bg-paper-100',
+  ghost: 'bg-transparent active:bg-paper-200',
+  danger: 'bg-transparent border border-clay-100 active:bg-clay-50',
 };
 
-const variantTextClasses: Record<Variant, string> = {
-  primary: 'text-cream-50',
-  secondary: 'text-cream-50',
-  outline: 'text-forest-600',
-  ghost: 'text-forest-600',
-  danger: 'text-white',
+const TEXT: Record<Variant, string> = {
+  primary: 'text-white',
+  gold: 'text-leaf-900',
+  secondary: 'text-ink-900',
+  ghost: 'text-leaf-600',
+  danger: 'text-clay-600',
 };
 
-const sizeClasses: Record<Size, string> = {
-  md: 'min-h-12 px-5 py-3 rounded-md gap-2',
-  lg: 'min-h-14 px-6 py-4 rounded-md gap-2.5',
-  xl: 'min-h-16 px-8 py-5 rounded-md gap-3',
+const ICON_COLOR: Record<Variant, string> = {
+  primary: colors.white,
+  gold: colors.leaf900,
+  secondary: colors.ink900,
+  ghost: colors.leaf600,
+  danger: colors.clay500,
 };
 
-const sizeTextClasses: Record<Size, string> = {
-  md: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-xl',
+const SIZE: Record<Size, string> = {
+  lg: 'h-14 px-6 rounded-[14px]',
+  md: 'h-12 px-5 rounded-[12px]',
+  sm: 'h-10 px-4 rounded-[10px]',
 };
 
-export function Button({
-  variant = 'primary',
-  size = 'lg',
-  fullWidth = true,
-  className,
-  children,
-  disabled,
-  ...props
-}: ButtonProps) {
-  const { language } = useApp();
-  const scriptFont = getBodyFont(language, 'bold');
-
+export function Button({ label, variant = 'primary', size = 'lg', icon: Icon, loading, disabled, className, onPress, ...props }: ButtonProps) {
+  const inactive = disabled || loading;
   return (
     <Pressable
-      disabled={disabled}
-      className={twMerge(
-        'flex-row items-center justify-center active:scale-[0.98]',
-        variantClasses[variant],
-        sizeClasses[size],
-        fullWidth && 'w-full',
-        disabled && 'opacity-50',
-        className
-      )}
       {...props}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      disabled={inactive}
+      onPress={(event) => {
+        if (variant === 'primary' || variant === 'gold') void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress?.(event);
+      }}
+      className={twMerge('flex-row items-center justify-center', SIZE[size], CONTAINER[variant], inactive && 'opacity-50', className)}
     >
-      {typeof children === 'string' || Array.isArray(children) ? (
-        <Text
-          style={scriptFont ? { fontFamily: scriptFont } : undefined}
-          className={twMerge(
-            'font-body-bold text-center tracking-wide',
-            variantTextClasses[variant],
-            sizeTextClasses[size]
-          )}
-        >
-          {children}
-        </Text>
+      {loading ? (
+        <ActivityIndicator color={ICON_COLOR[variant]} />
       ) : (
-        children
+        <View className="flex-row items-center gap-2">
+          {Icon && <Icon size={size === 'sm' ? 16 : 19} color={ICON_COLOR[variant]} strokeWidth={2.2} />}
+          <Txt variant={size === 'sm' ? 'bodySm' : 'body'} weight="semibold" className={TEXT[variant]} numberOfLines={1}>
+            {label}
+          </Txt>
+        </View>
       )}
     </Pressable>
   );
-}
-
-/** Explicit semantic aliases for new screens; existing callers can retain Button. */
-export function PrimaryButton(props: Omit<ButtonProps, 'variant'>) {
-  return <Button {...props} variant="primary" />;
-}
-
-export function SecondaryButton(props: Omit<ButtonProps, 'variant'>) {
-  return <Button {...props} variant="secondary" />;
 }
