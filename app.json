@@ -4,13 +4,13 @@
     "slug": "karigarsetu",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/app/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/images/app/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#236B45"
+      "backgroundColor": "#1F6B47"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,24 +19,22 @@
     "android": {
       "package": "com.karigarsetu.app",
       "adaptiveIcon": {
-        "backgroundColor": "#236B45",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/app/adaptive-icon.png",
+        "backgroundColor": "#FAF7E3"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/images/app/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#236B45",
-          "image": "./assets/splash-icon.png",
-          "imageWidth": 160
+          "backgroundColor": "#1F6B47",
+          "image": "./assets/images/app/splash-icon.png",
+          "imageWidth": 180
         }
       ],
       [
@@ -45,7 +43,19 @@
           "photosPermission": "KarigarSetu uses your photos to create product listings.",
           "cameraPermission": "KarigarSetu uses your camera to photograph your products."
         }
+      ],
+      "expo-font",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "KarigarSetu uses your microphone so you can describe your products by voice."
+        }
       ]
-    ]
+    ],
+    "androidStatusBar": {
+      "backgroundColor": "#1F6B47",
+      "barStyle": "light-content",
+      "translucent": false
+    }
   }
 }
