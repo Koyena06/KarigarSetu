@@ -4,6 +4,15 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['CormorantGaramond_700Bold'],
+        section: ['PlayfairDisplay_700Bold'],
+        body: ['Poppins_400Regular'],
+        medium: ['Poppins_500Medium'],
+        semibold: ['Poppins_600SemiBold'],
+        bold: ['Poppins_700Bold'],
+      },
+
       colors: {
         cream: {
           50: '#FFFDF8',

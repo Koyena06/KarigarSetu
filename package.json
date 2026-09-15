@@ -12,6 +12,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@expo-google-fonts/cormorant-garamond": "^0.4.1",
+    "@expo-google-fonts/playfair-display": "^0.4.2",
+    "@expo-google-fonts/poppins": "^0.4.1",
     "@react-native-community/slider": "5.0.1",
     "@supabase/supabase-js": "^2.57.4",
     "buffer": "^6.0.3",
